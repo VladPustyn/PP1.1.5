@@ -19,7 +19,7 @@ public class UserDaoJDBCImpl extends Main implements UserDao {
 
     public void createUsersTable() {
 
-        String sql = "CREATE TABLE `dbkata`.`users` (\n" +
+        String sql = "CREATE TABLE IF NOT EXISTS `dbkata`.`users` (\n" +
                 "`id` INT NOT NULL AUTO_INCREMENT,\n" +
                 "`name` VARCHAR(45) NOT NULL,\n" +
                 "`lastname` VARCHAR(45) NOT NULL,\n" +
@@ -30,27 +30,15 @@ public class UserDaoJDBCImpl extends Main implements UserDao {
 
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
-        } catch (SQLSyntaxErrorException e) {
-            if (e.getMessage().equals("Table 'users' already exists")) {
-                System.out.println("Table already exists");
-            } else {
-                e.printStackTrace();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void dropUsersTable() {
-        String sql = "DROP TABLE users;";
+        String sql = "DROP TABLE IF EXISTS users;";
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
-        } catch (SQLSyntaxErrorException e) {
-            if (e.getMessage().equals("Unknown table 'dbkata.users'")) {
-                System.out.println("Unknown table");
-            } else {
-                e.printStackTrace();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,7 +46,6 @@ public class UserDaoJDBCImpl extends Main implements UserDao {
 
 
     public void saveUser(String name, String lastName, byte age) {
-        // PreparedStatement preparedStatement = null;
         String sql = "INSERT INTO users (NAME, LASTNAME, AGE) VALUES(?, ? , ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
