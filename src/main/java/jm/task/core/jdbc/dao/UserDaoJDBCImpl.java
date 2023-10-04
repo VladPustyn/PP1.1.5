@@ -2,17 +2,20 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.Main;
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.util.Util;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoJDBCImpl extends Main implements UserDao {
+import static jm.task.core.jdbc.util.Util.getConnection;
 
-    private Connection connection = getConnection();
+public class UserDaoJDBCImpl extends Main implements UserDao {
 
     public UserDaoJDBCImpl() {
 
     }
+    private static Connection connection = getConnection();
 
     public void createUsersTable() {
 
